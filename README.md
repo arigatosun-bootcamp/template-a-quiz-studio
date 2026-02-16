@@ -1,13 +1,41 @@
-# template-a-quiz-studio
+# Quiz Studio
 
-Bootcamp Part A: Quiz Studio テンプレートリポジトリ
+## ブートキャンプ概要
+
+このブートキャンプでは、**AIを活用したWebアプリ開発**を実践的に学びます。
+
+- **対象**: エンジニア・非エンジニア問わず、AI時代の開発スキルを身につけたい方
+- **学ぶこと**:
+  - AIを使ったWebアプリ開発の基礎
+  - 実務で使える開発フロー（Issue → ブランチ → PR → レビュー）
+  - Claude等のLLMを活用した開発手法
+- **最終日**: 作ったアプリをみんなの前でデモ発表
+
+## Part A: Quiz Studio とは？
+
+AIが**クイズを自動生成**してくれるWebアプリを作ります。
+
+ユーザーがテーマやジャンルを指定すると、LLM（Claude / ChatGPT）がクイズ問題を生成。
+ブラウザ上で回答でき、結果も確認できる、**デモ映えする本格的なアプリ**を目指します。
+
+### 主な機能イメージ
+- テーマを入力 → AIがクイズを自動生成
+- ブラウザ上でクイズに回答
+- 回答結果の表示・記録
+
+### 使用技術
+- **Next.js** (TypeScript) — フロントエンド＆API
+- **Supabase** — データベース・認証
+- **LLM (Claude / ChatGPT)** — クイズ生成
+
+---
 
 ## セットアップ
 
 ```bash
 # リポジトリをクローン
 git clone <your-repo-url>
-cd template-a-quiz-studio
+cd <your-repo-name>
 
 # 依存パッケージをインストール
 npm install
