@@ -144,7 +144,7 @@ flowchart TD
 
     LOADING --> CREATE_SESSION["quiz_sessionsに<br/>新規セッション作成"]
     CREATE_SESSION --> SELECT_PREF["出題する5県を決定<br/>未正解の県を優先"]
-    SELECT_PREF --> CALL_AI["Claude APIに<br/>5問の生成をリクエスト"]
+    SELECT_PREF --> CALL_AI["Gemini APIに<br/>5問の生成をリクエスト"]
 
     CALL_AI --> AI_RESULT{API応答}
     AI_RESULT -->|成功| SAVE_QUIZ["quizzesテーブルに<br/>5問をINSERT"]

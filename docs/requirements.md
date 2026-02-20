@@ -17,7 +17,7 @@
 |------|------|
 | Next.js (TypeScript) | フロントエンド＋API |
 | Supabase | データベース・認証 |
-| Claude API | クイズ自動生成 |
+| Gemini API (Google) | クイズ自動生成 |
 | Vitest | テスト |
 | ESLint | コード品質チェック |
 
@@ -331,7 +331,7 @@ Chrome / Safari / Firefox / Edge
 |------|------|
 | ホスティング | Vercel（Next.jsとの親和性が最も高い。無料枠あり） |
 | ドメイン | Vercelのデフォルトドメイン（xxx.vercel.app）を初期利用。独自ドメインは必要に応じて後日設定 |
-| 環境変数 | Supabase接続情報・Claude APIキーはVercelの環境変数に設定（コードに含めない） |
+| 環境変数 | Supabase接続情報・Gemini APIキーはVercelの環境変数に設定（コードに含めない） |
 
 ## 14. フェーズ分け
 

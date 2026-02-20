@@ -1,7 +1,7 @@
 # JapanMaster API設計書
 
 > Next.js App Router の Route Handlers（`app/api/` 配下）を使用したAPI設計。
-> Supabaseクライアントによるデータベース操作と、Claude APIによるクイズ生成を中心に構成する。
+> Supabaseクライアントによるデータベース操作と、Gemini APIによるクイズ生成を中心に構成する。
 
 ---
 
@@ -9,7 +9,7 @@
 
 | # | メソッド | パス | 概要 | 認証 |
 |---|---------|------|------|------|
-| 1 | POST | `/api/quiz/generate` | クイズ5問を生成（Claude API + DB保存） | 必須 |
+| 1 | POST | `/api/quiz/generate` | クイズ5問を生成（Gemini API + DB保存） | 必須 |
 | 2 | POST | `/api/quiz/answer` | 1問の回答を保存 | 必須 |
 | 3 | POST | `/api/quiz/complete` | セッション完了処理（スコア更新 + 都道府県進捗更新） | 必須 |
 | 4 | GET | `/api/quiz/session/[sessionId]` | セッションの詳細取得（結果画面用） | 必須 |
@@ -45,7 +45,7 @@ if (!user) {
 
 ### 2.1 POST `/api/quiz/generate` — クイズ生成
 
-Claude APIを使って5問のクイズを生成し、データベースに保存する。
+Gemini APIを使って5問のクイズを生成し、データベースに保存する。
 
 #### リクエスト
 
@@ -95,7 +95,7 @@ Claude APIを使って5問のクイズを生成し、データベースに保存
 | 401 | 未認証 | `{ "error": "認証が必要です" }` |
 | 400 | genre / difficulty が不正 | `{ "error": "ジャンルまたは難易度の値が不正です" }` |
 | 429 | 1日の利用上限（20回）超過 | `{ "error": "本日の利用上限に達しました。明日またお楽しみください", "limitReached": true }` |
-| 500 | Claude API 生成失敗（3回リトライ後） | `{ "error": "問題の生成に失敗しました。もう一度お試しください" }` |
+| 500 | Gemini API 生成失敗（3回リトライ後） | `{ "error": "問題の生成に失敗しました。もう一度お試しください" }` |
 | 500 | その他のサーバーエラー | `{ "error": "サーバーエラーが発生しました" }` |
 
 #### 処理フロー
@@ -110,16 +110,16 @@ Claude APIを使って5問のクイズを生成し、データベースに保存
    - 未正解の県からランダムに5県を選択
    - 未正解が5県未満の場合 → 全47県からランダムに補充して合計5県にする
 5. **セッション作成**: `quiz_sessions` テーブルにINSERT（score: 0）
-6. **Claude API呼び出し**（リトライ付き）:
+6. **Gemini API呼び出し**（リトライ付き）:
    - ジャンル・難易度・5県をプロンプトに含めてリクエスト
    - APIタイムアウト: 10秒
    - 失敗時: 2秒待機 → リトライ（2回目）、4秒待機 → リトライ（3回目）
    - 3回すべて失敗 → セッションを削除して500エラーを返す
-7. **レスポンスのパース・バリデーション**: Claude APIの出力をJSONパースし、5問分のデータ構造を検証
+7. **レスポンスのパース・バリデーション**: Gemini APIの出力をJSONパースし、5問分のデータ構造を検証
 8. **クイズ保存**: `quizzes` テーブルに5件をINSERT（question_order: 1〜5）
 9. レスポンスを返す（正解・解説を除いた問題データ）
 
-#### Claude APIへのプロンプト設計
+#### Gemini APIへのプロンプト設計
 
 ```
 あなたは日本に関するクイズの出題者です。
@@ -989,24 +989,23 @@ const { data: sessions, count, error } = await supabase
 
 ---
 
-## 6. Claude API 連携仕様
+## 6. Gemini API 連携仕様
 
 ### 6.1 使用モデル
 
 | 項目 | 値 |
 |------|-----|
-| モデル | `claude-sonnet-4-20250514`（または利用可能な最新のSonnetモデル） |
-| max_tokens | 2048 |
+| モデル | `gemini-2.0-flash`（高速・低コスト） |
+| maxOutputTokens | 2048 |
 | temperature | 0.8（多様なクイズ生成のため） |
 
 ### 6.2 API呼び出し実装
 
 ```typescript
-import Anthropic from '@anthropic-ai/sdk'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 
-const client = new Anthropic({
-  apiKey: process.env.CLAUDE_API_KEY,
-})
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
+const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
 
 async function generateQuizzes(
   genre: string,
@@ -1015,19 +1014,16 @@ async function generateQuizzes(
 ): Promise<GeneratedQuiz[]> {
   const prompt = buildPrompt(genre, difficulty, prefectures)
 
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 2048,
-    temperature: 0.8,
-    messages: [
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
+  const result = await model.generateContent({
+    contents: [{ role: 'user', parts: [{ text: prompt }] }],
+    generationConfig: {
+      temperature: 0.8,
+      maxOutputTokens: 2048,
+      responseMimeType: 'application/json',
+    },
   })
 
-  const text = response.content[0].type === 'text' ? response.content[0].text : ''
+  const text = result.response.text()
   return parseQuizResponse(text)
 }
 ```
@@ -1123,9 +1119,9 @@ function parseQuizResponse(text: string): GeneratedQuiz[] {
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase プロジェクトURL | `.env.local` / Vercel環境変数 |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 公開キー（クライアント用） | `.env.local` / Vercel環境変数 |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase サービスロールキー（サーバー専用） | `.env.local` / Vercel環境変数 |
-| `CLAUDE_API_KEY` | Claude API キー | `.env.local` / Vercel環境変数 |
+| `GEMINI_API_KEY` | Gemini API キー | `.env.local` / Vercel環境変数 |
 
-> **重要**: `SUPABASE_SERVICE_ROLE_KEY` と `CLAUDE_API_KEY` は `NEXT_PUBLIC_` プレフィックスを付けないこと。
+> **重要**: `SUPABASE_SERVICE_ROLE_KEY` と `GEMINI_API_KEY` は `NEXT_PUBLIC_` プレフィックスを付けないこと。
 > サーバーサイド（Route Handlers）でのみ使用し、クライアントには露出させない。
 
 ---
@@ -1142,7 +1138,7 @@ function parseQuizResponse(text: string): GeneratedQuiz[] {
 
 - `genre` / `difficulty` は定義済みの値のみ許可する（enum チェック）
 - UUID形式のチェックを行う
-- Claude APIのレスポンスは必ずパース・バリデーションしてからDBに保存する
+- Gemini APIのレスポンスは必ずパース・バリデーションしてからDBに保存する
 
 ### 8.3 レート制限
 
@@ -1169,7 +1165,7 @@ function parseQuizResponse(text: string): GeneratedQuiz[] {
     │
     └─ [ゲームスタート！]
          │
-         ├─ POST /api/quiz/generate   ← クイズ5問生成（Claude API）
+         ├─ POST /api/quiz/generate   ← クイズ5問生成（Gemini API）
          │
          │  [クイズ画面]
          │    │

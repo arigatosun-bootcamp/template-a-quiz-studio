@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JapanMaster 画面遷移図</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+      background: #FAF8F5;
+      color: #1B2A4A;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #1B2A4A;
+      border-bottom: 3px solid #C53D43;
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+    h2 {
+      color: #C53D43;
+      margin: 40px 0 15px;
+      padding-left: 10px;
+      border-left: 4px solid #C4A962;
+      font-size: 20px;
+    }
+    .diagram-container {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 15px 0 30px;
+      overflow-x: auto;
+    }
+    .description {
+      background: #f0f0e8;
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-size: 14px;
+    }
+    th {
+      background: #1B2A4A;
+      color: #FAF8F5;
+      padding: 10px 12px;
+      text-align: left;
+    }
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #ddd;
+    }
+    tr:hover { background: #f5f5f0; }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 15px 0;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 1px solid #999;
+    }
+  </style>
+</head>
+<body>
+
+<h1>JapanMaster ～日本制覇への道～ 画面遷移図</h1>
+
+<!-- ===== 1. 画面一覧 ===== -->
+<h2>1. 画面一覧</h2>
+<table>
+  <tr><th>#</th><th>画面名</th><th>URL</th><th>認証</th><th>ヘッダー</th></tr>
+  <tr><td>1</td><td>ログイン画面</td><td>/login</td><td>不要</td><td>非表示</td></tr>
+  <tr><td>2</td><td>新規登録画面</td><td>/register</td><td>不要</td><td>非表示</td></tr>
+  <tr><td>3</td><td>パスワードリセット画面</td><td>/reset-password</td><td>不要</td><td>非表示</td></tr>
+  <tr><td>4</td><td>トップ画面</td><td>/</td><td>必須</td><td>表示</td></tr>
+  <tr><td>5</td><td>クイズ画面</td><td>/quiz</td><td>必須</td><td>表示</td></tr>
+  <tr><td>6</td><td>結果画面</td><td>/result</td><td>必須</td><td>表示</td></tr>
+  <tr><td>7</td><td>回答履歴画面</td><td>/history</td><td>必須</td><td>表示</td></tr>
+  <tr><td>8</td><td>達成状況画面</td><td>/achievement</td><td>必須</td><td>表示</td></tr>
+  <tr><td>9</td><td>設定画面</td><td>/settings</td><td>必須</td><td>表示</td></tr>
+</table>
+
+<!-- ===== 2. メインフロー ===== -->
+<h2>2. 画面遷移図（全体フロー）</h2>
+
+<div class="description">
+  アプリにアクセスしたとき、ログイン状態によって表示される画面が変わります。<br>
+  <strong>オレンジ</strong> = 認証系画面、<strong>緑</strong> = メイン画面、<strong>赤</strong> = エラー画面、<strong>紫</strong> = メッセージ表示、<strong>青</strong> = 分岐判定
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-color" style="background:#FFF3E0;border-color:#E65100;"></div>認証系画面</div>
+  <div class="legend-item"><div class="legend-color" style="background:#E8F5E9;border-color:#2E7D32;"></div>メイン画面</div>
+  <div class="legend-item"><div class="legend-color" style="background:#FFEBEE;border-color:#C62828;"></div>エラー画面</div>
+  <div class="legend-item"><div class="legend-color" style="background:#F3E5F5;border-color:#6A1B9A;"></div>メッセージ表示</div>
+  <div class="legend-item"><div class="legend-color" style="background:#E3F2FD;border-color:#1565C0;"></div>分岐判定</div>
+</div>
+
+<div class="diagram-container">
+  <pre class="mermaid">
+flowchart TD
+    START((アプリアクセス)) --> AUTH_CHECK{認証状態チェック}
+
+    AUTH_CHECK -->|未ログイン| LOGIN[/"1. ログイン画面"/]
+    AUTH_CHECK -->|ログイン済み| TOP[/"4. トップ画面"/]
+
+    LOGIN -->|「新規登録はこちら」| REGISTER[/"2. 新規登録画面"/]
+    LOGIN -->|「パスワードを忘れた方」| RESET[/"3. パスワードリセット画面"/]
+    LOGIN -->|ログイン成功| TOP
+    LOGIN -->|Google認証成功| TOP
+
+    REGISTER -->|「ログインはこちら」| LOGIN
+    REGISTER -->|登録成功| REG_CONFIRM["確認メール送信完了"]
+    REGISTER -->|Google認証成功| TOP
+    REG_CONFIRM -->|メールのリンクをクリック| LOGIN
+
+    RESET -->|「ログインに戻る」| LOGIN
+    RESET -->|メール送信| RESET_CONFIRM["リセットメール送信完了"]
+    RESET_CONFIRM -->|メールのリンクをクリック| RESET_NEW["パスワード再設定"]
+    RESET_NEW -->|設定成功| LOGIN
+
+    TOP -->|ゲームスタート| QUIZ[/"5. クイズ画面"/]
+    TOP -->|利用上限超過| LIMIT_MSG["利用上限メッセージ"]
+    TOP -->|日本地図タップ| ACHIEVEMENT[/"8. 達成状況画面"/]
+    TOP -->|回答履歴ボタン| HISTORY[/"7. 回答履歴画面"/]
+    TOP -->|ヘッダー「設定」| SETTINGS[/"9. 設定画面"/]
+
+    QUIZ -->|5問回答完了| RESULT[/"6. 結果画面"/]
+    QUIZ -->|AI生成3回失敗| QUIZ_ERROR["生成失敗メッセージ"]
+    QUIZ_ERROR -->|再試行| QUIZ
+
+    RESULT -->|もう一度| QUIZ
+    RESULT -->|トップに戻る| TOP
+
+    SETTINGS -->|アカウント削除| LOGIN
+
+    TOP -->|ログアウト| LOGIN
+
+    ERROR_404[/"404エラー"/] -->|トップに戻る| TOP
+    ERROR_500[/"500エラー"/] -->|トップに戻る| TOP
+
+    classDef authPage fill:#FFF3E0,stroke:#E65100,color:#000
+    classDef mainPage fill:#E8F5E9,stroke:#2E7D32,color:#000
+    classDef errorPage fill:#FFEBEE,stroke:#C62828,color:#000
+    classDef message fill:#F3E5F5,stroke:#6A1B9A,color:#000
+    classDef decision fill:#E3F2FD,stroke:#1565C0,color:#000
+
+    class LOGIN,REGISTER,RESET authPage
+    class TOP,QUIZ,RESULT,HISTORY,ACHIEVEMENT,SETTINGS mainPage
+    class ERROR_404,ERROR_500 errorPage
+    class REG_CONFIRM,RESET_CONFIRM,RESET_NEW,LIMIT_MSG,QUIZ_ERROR message
+    class AUTH_CHECK decision
+  </pre>
+</div>
+
+<!-- ===== 3. 認証ガード ===== -->
+<h2>3. 認証ガードフロー</h2>
+
+<div class="description">
+  すべての画面アクセス時に、ログイン状態を自動チェックします。<br>
+  未ログインでメイン画面にアクセス → ログイン画面へ強制移動<br>
+  ログイン済みでログイン画面にアクセス → トップ画面へ強制移動
+</div>
+
+<div class="diagram-container">
+  <pre class="mermaid">
+flowchart TD
+    ACCESS((画面にアクセス)) --> CHECK{ログイン状態を確認}
+
+    CHECK -->|ログイン済み| IS_AUTH{認証不要ページ？}
+    CHECK -->|未ログイン| IS_PROTECTED{認証必要ページ？}
+
+    IS_AUTH -->|はい：ログイン画面など| REDIRECT_TOP["トップ画面へ移動"]
+    IS_AUTH -->|いいえ：トップ画面など| SHOW_PAGE["そのまま表示"]
+
+    IS_PROTECTED -->|はい：トップ画面など| REDIRECT_LOGIN["ログイン画面へ移動"]
+    IS_PROTECTED -->|いいえ：ログイン画面など| SHOW_PAGE
+
+    classDef decision fill:#E3F2FD,stroke:#1565C0,color:#000
+    classDef action fill:#E8F5E9,stroke:#2E7D32,color:#000
+    classDef redirect fill:#FFF3E0,stroke:#E65100,color:#000
+
+    class CHECK,IS_AUTH,IS_PROTECTED decision
+    class SHOW_PAGE action
+    class REDIRECT_TOP,REDIRECT_LOGIN redirect
+  </pre>
+</div>
+
+<!-- ===== 4. クイズフロー ===== -->
+<h2>4. クイズフロー詳細</h2>
+
+<div class="description">
+  「ゲームスタート！」を押してから結果画面に到達するまでの詳細な流れです。<br>
+  AI生成が失敗した場合は最大3回リトライします（2秒→4秒の間隔）。
+</div>
+
+<div class="diagram-container">
+  <pre class="mermaid">
+flowchart TD
+    START["ゲームスタート！"] --> LIMIT{利用上限チェック}
+
+    LIMIT -->|上限超過| LIMIT_MSG["上限メッセージ表示"]
+    LIMIT -->|OK| LOADING["ローディング表示"]
+
+    LOADING --> CREATE["セッション作成"]
+    CREATE --> SELECT["出題する5県を決定"]
+    SELECT --> AI["Gemini APIで5問生成"]
+
+    AI --> R1{成功？}
+    R1 -->|成功| SAVE["5問をDB保存"]
+    R1 -->|失敗| W1["2秒待機 → リトライ2回目"]
+
+    W1 --> R2{成功？}
+    R2 -->|成功| SAVE
+    R2 -->|失敗| W2["4秒待機 → リトライ3回目"]
+
+    W2 --> R3{成功？}
+    R3 -->|成功| SAVE
+    R3 -->|失敗| FAIL["生成失敗 → 再試行ボタン"]
+    FAIL -->|再試行| LOADING
+
+    SAVE --> Q["問題を表示"]
+    Q --> CHOOSE["選択肢をタップ"]
+    CHOOSE --> ANSWER["「回答する」ボタン"]
+    ANSWER --> JUDGE{正解？}
+
+    JUDGE -->|正解| OK["正解！＋解説"]
+    JUDGE -->|不正解| NG["不正解＋正解＋解説"]
+
+    OK --> LAST{5問目？}
+    NG --> LAST
+
+    LAST -->|1〜4問目| NEXT["次の問題へ"]
+    NEXT --> Q
+
+    LAST -->|5問目| UPDATE["スコア＋都道府県進捗を更新"]
+    UPDATE --> RESULT["結果画面へ"]
+
+    classDef loading fill:#FFF9C4,stroke:#F57F17,color:#000
+    classDef error fill:#FFEBEE,stroke:#C62828,color:#000
+    classDef success fill:#E8F5E9,stroke:#2E7D32,color:#000
+    classDef action fill:#E3F2FD,stroke:#1565C0,color:#000
+
+    class LOADING,W1,W2 loading
+    class FAIL,LIMIT_MSG,NG error
+    class OK,SAVE success
+    class Q,CHOOSE,ANSWER action
+  </pre>
+</div>
+
+<!-- ===== 5. ナビゲーション ===== -->
+<h2>5. ナビゲーション構造</h2>
+
+<div class="description">
+  ログイン後のすべての画面に共通のヘッダーが表示されます。<br>
+  PC（768px以上）: ボタンが横並び ／ スマホ（767px以下）: ハンバーガーメニュー（≡）内に格納
+</div>
+
+<div class="diagram-container">
+  <pre class="mermaid">
+flowchart LR
+    subgraph HEADER["ヘッダー（全画面共通）"]
+        LOGO["JapanMaster"]
+        H1["回答履歴"]
+        H2["達成状況"]
+        H3["設定"]
+        H4["ログアウト"]
+    end
+
+    LOGO --> TOP["トップ画面"]
+    H1 --> HISTORY["回答履歴画面"]
+    H2 --> ACHIEVE["達成状況画面"]
+    H3 --> SETTINGS["設定画面"]
+    H4 -->|確認ダイアログ| LOGIN["ログイン画面"]
+
+    subgraph EXTRA["トップ画面の追加ボタン"]
+        MAP["日本地図タップ"]
+        BTN["回答履歴を見る"]
+    end
+
+    MAP --> ACHIEVE
+    BTN --> HISTORY
+
+    classDef header fill:#1B2A4A,stroke:#C4A962,color:#FAF8F5
+    classDef page fill:#FAF8F5,stroke:#1B2A4A,color:#1B2A4A
+
+    class LOGO,H1,H2,H3,H4 header
+    class TOP,HISTORY,ACHIEVE,SETTINGS,LOGIN page
+  </pre>
+</div>
+
+<!-- ===== 6. 遷移一覧表 ===== -->
+<h2>6. 画面遷移一覧表</h2>
+
+<h3 style="margin:20px 0 10px;color:#1B2A4A;">認証系の遷移</h3>
+<table>
+  <tr><th>遷移元</th><th>遷移先</th><th>きっかけ</th></tr>
+  <tr><td>ログイン画面</td><td>トップ画面</td><td>ログイン成功（メール or Google）</td></tr>
+  <tr><td>ログイン画面</td><td>新規登録画面</td><td>「新規登録はこちら」リンク</td></tr>
+  <tr><td>ログイン画面</td><td>パスワードリセット画面</td><td>「パスワードを忘れた方はこちら」リンク</td></tr>
+  <tr><td>新規登録画面</td><td>確認メール送信完了</td><td>登録成功</td></tr>
+  <tr><td>新規登録画面</td><td>ログイン画面</td><td>「ログインはこちら」リンク</td></tr>
+  <tr><td>確認メール</td><td>ログイン画面</td><td>メール内リンクをクリック</td></tr>
+  <tr><td>パスワードリセット画面</td><td>ログイン画面</td><td>「ログインに戻る」リンク</td></tr>
+  <tr><td>パスワード再設定</td><td>ログイン画面</td><td>新パスワード設定成功</td></tr>
+</table>
+
+<h3 style="margin:20px 0 10px;color:#1B2A4A;">メイン画面の遷移</h3>
+<table>
+  <tr><th>遷移元</th><th>遷移先</th><th>きっかけ</th></tr>
+  <tr><td>トップ画面</td><td>クイズ画面</td><td>「ゲームスタート！」ボタン（利用上限内）</td></tr>
+  <tr><td>トップ画面</td><td>達成状況画面</td><td>日本地図タップ</td></tr>
+  <tr><td>トップ画面</td><td>回答履歴画面</td><td>「回答履歴を見る」ボタン</td></tr>
+  <tr><td>クイズ画面</td><td>結果画面</td><td>5問回答完了 →「結果を見る」</td></tr>
+  <tr><td>結果画面</td><td>クイズ画面</td><td>「同じ条件でもう一度」ボタン</td></tr>
+  <tr><td>結果画面</td><td>トップ画面</td><td>「トップに戻る」ボタン</td></tr>
+  <tr><td>設定画面</td><td>ログイン画面</td><td>アカウント削除成功</td></tr>
+  <tr><td>全画面</td><td>ログイン画面</td><td>ログアウト</td></tr>
+</table>
+
+</body>
+</html>

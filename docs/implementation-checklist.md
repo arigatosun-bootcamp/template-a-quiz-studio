@@ -13,7 +13,7 @@
 | Supabase Auth（メール） | メール認証 | ✅ デフォルトで利用可能 | 送信元: noreply@mail.app.supabase.io |
 | Google Cloud Console | Google OAuth | ❌ 未設定 | OAuth同意画面 + クライアントID取得が必要 |
 | Supabase Auth（Google） | Googleログイン | ❌ 未設定 | Google OAuth クライアントID/Secretを登録 |
-| Anthropic (Claude API) | クイズ生成 | ❌ 未取得 | https://console.anthropic.com でAPIキー取得 |
+| Google AI (Gemini API) | クイズ生成 | ❌ 未取得 | https://aistudio.google.com でAPIキー取得 |
 | Vercel | デプロイ | ⏳ 開発完了後 | Day5以降に設定 |
 
 ---
@@ -42,26 +42,25 @@
 
 ---
 
-## 3. Claude APIキー取得手順
+## 3. Gemini APIキー取得手順
 
-1. https://console.anthropic.com にアクセス
-2. アカウント作成（メール or Google）
-3. クレジットカードを登録（従量課金）
-4. 「API Keys」→「Create Key」でキーを生成
-5. `.env.local` に設定:
+1. https://aistudio.google.com にアクセス
+2. Googleアカウントでログイン
+3. 左メニュー「Get API key」→「Create API key」でキーを生成
+4. `.env.local` に設定:
    ```
-   ANTHROPIC_API_KEY=sk-ant-xxxxx...
+   GEMINI_API_KEY=AIzaSy...
    ```
 
 ### 料金目安
 
 | 項目 | 目安 |
 |------|------|
-| 1回のクイズ生成（5問） | 約 $0.01〜$0.03（約1.5〜4.5円） |
-| 1日20回利用した場合 | 約 $0.2〜$0.6（約30〜90円） |
-| 月間（1ユーザーが毎日利用） | 約 $6〜$18（約900〜2,700円） |
+| Gemini 2.0 Flash 無料枠 | 1日1500リクエストまで無料 |
+| 1回のクイズ生成（5問） | 無料枠内なら $0 |
+| 無料枠を超えた場合 | 100万トークンあたり約 $0.10 |
 
-※ Claude 3.5 Sonnet を使用想定。モデルにより料金は変動。
+※ 開発・テスト段階では無料枠で十分まかなえる。
 
 ---
 
@@ -132,8 +131,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=（設定済み）
 # Supabase Admin（アカウント削除用 / サーバー側のみ使用）
 SUPABASE_SERVICE_ROLE_KEY=（Supabaseダッシュボードから取得）
 
-# Claude API（クイズ生成用）
-ANTHROPIC_API_KEY=（Anthropicコンソールから取得）
+# Gemini API（クイズ生成用）
+GEMINI_API_KEY=（Google AI Studioから取得）
 
 # App
 APP_ENV=local
