@@ -1,66 +1,67 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div style={{ padding: "2rem", maxWidth: "600px", margin: "0 auto" }}>
+      <h1 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
+        Quiz Studio
+      </h1>
+
+      {user ? (
+        <div>
+          <p style={{ marginBottom: "1rem" }}>
+            ログイン中: {user.email}
           </p>
+          <form action="/auth/signout" method="post">
+            <button
+              type="submit"
+              style={{
+                padding: "0.5rem 1rem",
+                backgroundColor: "#dc2626",
+                color: "#fff",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+            >
+              ログアウト
+            </button>
+          </form>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      ) : (
+        <div style={{ display: "flex", gap: "1rem" }}>
+          <Link
+            href="/login"
+            style={{
+              padding: "0.5rem 1rem",
+              backgroundColor: "#4A90D9",
+              color: "#fff",
+              borderRadius: "8px",
+              textDecoration: "none",
+            }}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            ログイン
+          </Link>
+          <Link
+            href="/register"
+            style={{
+              padding: "0.5rem 1rem",
+              backgroundColor: "#16a34a",
+              color: "#fff",
+              borderRadius: "8px",
+              textDecoration: "none",
+            }}
           >
-            Documentation
-          </a>
+            新規登録
+          </Link>
         </div>
-      </main>
+      )}
     </div>
   );
 }
