@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JapanMaster ER図</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+      background: #FAF8F5;
+      color: #1B2A4A;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #1B2A4A;
+      border-bottom: 3px solid #C53D43;
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+    h2 {
+      color: #C53D43;
+      margin: 40px 0 15px;
+      padding-left: 10px;
+      border-left: 4px solid #C4A962;
+      font-size: 20px;
+    }
+    h3 {
+      margin: 20px 0 10px;
+      color: #1B2A4A;
+      font-size: 16px;
+    }
+    .diagram-container {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 15px 0 30px;
+      overflow-x: auto;
+    }
+    .description {
+      background: #f0f0e8;
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-size: 14px;
+    }
+    th {
+      background: #1B2A4A;
+      color: #FAF8F5;
+      padding: 10px 12px;
+      text-align: left;
+    }
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #ddd;
+    }
+    tr:hover { background: #f5f5f0; }
+    .table-name {
+      display: inline-block;
+      background: #C53D43;
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 14px;
+      margin-right: 8px;
+    }
+    .table-desc {
+      display: inline-block;
+      font-size: 14px;
+      color: #1B2A4A;
+    }
+    .table-header {
+      margin: 30px 0 5px;
+      padding: 10px 14px;
+      background: linear-gradient(135deg, #1B2A4A 0%, #2d3f63 100%);
+      color: #FAF8F5;
+      border-radius: 6px 6px 0 0;
+      font-size: 15px;
+    }
+    .table-header .tname {
+      font-weight: bold;
+      font-size: 16px;
+      color: #C4A962;
+    }
+    .table-header .tdesc {
+      margin-left: 12px;
+      font-size: 13px;
+      color: #ccc;
+    }
+    .constraint-badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 1px 6px;
+      border-radius: 3px;
+      margin-right: 3px;
+      font-weight: bold;
+    }
+    .badge-pk { background: #C53D43; color: #fff; }
+    .badge-fk { background: #C4A962; color: #1B2A4A; }
+    .badge-nn { background: #1B2A4A; color: #FAF8F5; }
+    .badge-uq { background: #5B8C5A; color: #fff; }
+    .badge-ck { background: #6A5ACD; color: #fff; }
+    .badge-df { background: #888; color: #fff; }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 15px 0;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 1px solid #999;
+    }
+    .rls-table {
+      margin-top: 0;
+    }
+    .rls-table th:first-child { width: 160px; }
+    .rls-table td:first-child {
+      font-weight: bold;
+      color: #C53D43;
+    }
+    .policy-op {
+      display: inline-block;
+      font-size: 11px;
+      padding: 1px 8px;
+      border-radius: 3px;
+      font-weight: bold;
+      margin-right: 4px;
+    }
+    .op-select { background: #E3F2FD; color: #1565C0; }
+    .op-insert { background: #E8F5E9; color: #2E7D32; }
+    .op-update { background: #FFF3E0; color: #E65100; }
+    code {
+      background: #f0f0e8;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+    }
+  </style>
+</head>
+<body>
+
+<h1>JapanMaster ~日本制覇への道~ ER図</h1>
+
+<!-- ===== 1. ER図 ===== -->
+<h2>1. ER図（Entity Relationship Diagram）</h2>
+
+<div class="description">
+  JapanMasterアプリのデータベース構造です。<br>
+  <strong>auth.users</strong> は Supabase 認証が管理する内部テーブルで、<strong>public.users</strong> がアプリ側のユーザー情報を保持します。<br>
+  すべてのテーブルは最終的に users テーブルを通じてユーザーに紐づきます。
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-color" style="background:#C53D43;"></div>PK（主キー）</div>
+  <div class="legend-item"><div class="legend-color" style="background:#C4A962;"></div>FK（外部キー）</div>
+  <div class="legend-item"><div class="legend-color" style="background:#1B2A4A;"></div>NOT NULL</div>
+  <div class="legend-item"><div class="legend-color" style="background:#5B8C5A;"></div>UNIQUE</div>
+  <div class="legend-item"><div class="legend-color" style="background:#6A5ACD;"></div>CHECK</div>
+  <div class="legend-item"><div class="legend-color" style="background:#888;"></div>DEFAULT</div>
+</div>
+
+<div class="diagram-container">
+  <pre class="mermaid">
+erDiagram
+    AUTH_USERS["auth.users"] {
+        uuid id PK "Supabase認証が管理"
+    }
+
+    USERS["public.users"] {
+        uuid id PK,FK "auth.usersへの参照"
+        text email "メールアドレス NOT NULL"
+        timestamptz created_at "作成日時 DEFAULT now()"
+    }
+
+    QUIZ_SESSIONS["public.quiz_sessions"] {
+        uuid id PK "DEFAULT gen_random_uuid()"
+        uuid user_id FK "usersへの参照 NOT NULL"
+        text genre "ジャンル NOT NULL CHECK"
+        text difficulty "難易度 NOT NULL CHECK"
+        int score "スコア NOT NULL DEFAULT 0 CHECK"
+        timestamptz played_at "プレイ日時 DEFAULT now()"
+    }
+
+    QUIZZES["public.quizzes"] {
+        uuid id PK "DEFAULT gen_random_uuid()"
+        uuid session_id FK "quiz_sessionsへの参照 NOT NULL"
+        text question_text "問題文 NOT NULL"
+        text choice_1 "選択肢1 NOT NULL"
+        text choice_2 "選択肢2 NOT NULL"
+        text choice_3 "選択肢3 NOT NULL"
+        text correct_answer "正解 NOT NULL"
+        text explanation "解説 NOT NULL"
+        text genre "ジャンル NOT NULL CHECK"
+        text difficulty "難易度 NOT NULL CHECK"
+        text prefecture "都道府県 NOT NULL"
+        int question_order "出題順 NOT NULL CHECK"
+        timestamptz created_at "作成日時 DEFAULT now()"
+    }
+
+    ANSWERS["public.answers"] {
+        uuid id PK "DEFAULT gen_random_uuid()"
+        uuid user_id FK "usersへの参照 NOT NULL"
+        uuid quiz_id FK "quizzesへの参照 NOT NULL"
+        text selected_answer "選択した回答 NOT NULL"
+        boolean is_correct "正解かどうか NOT NULL"
+        timestamptz answered_at "回答日時 DEFAULT now()"
+    }
+
+    PREFECTURE_PROGRESS["public.prefecture_progress"] {
+        uuid id PK "DEFAULT gen_random_uuid()"
+        uuid user_id FK "usersへの参照 NOT NULL"
+        text prefecture "都道府県 NOT NULL UNIQUE組"
+        text max_difficulty "最高クリア難易度 NOT NULL CHECK"
+        timestamptz updated_at "更新日時 DEFAULT now()"
+    }
+
+    AUTH_USERS ||--o| USERS : "id参照 ON DELETE CASCADE"
+    USERS ||--o{ QUIZ_SESSIONS : "user_id ON DELETE CASCADE"
+    USERS ||--o{ ANSWERS : "user_id ON DELETE CASCADE"
+    USERS ||--o{ PREFECTURE_PROGRESS : "user_id ON DELETE CASCADE"
+    QUIZ_SESSIONS ||--o{ QUIZZES : "session_id ON DELETE CASCADE"
+    QUIZZES ||--o{ ANSWERS : "quiz_id ON DELETE CASCADE"
+  </pre>
+</div>
+
+<!-- ===== 2. テーブル定義詳細 ===== -->
+<h2>2. テーブル定義詳細</h2>
+
+<div class="description">
+  各テーブルのカラム名、データ型、制約、説明の一覧です。<br>
+  すべてのテーブルで <strong>RLS（Row Level Security）</strong> が有効化されており、ユーザーは自分自身のデータのみアクセスできます。
+</div>
+
+<!-- auth.users -->
+<div class="table-header">
+  <span class="tname">auth.users</span>
+  <span class="tdesc">Supabase認証テーブル（Supabaseが自動管理）</span>
+</div>
+<table>
+  <tr>
+    <th>カラム名</th><th>データ型</th><th>制約</th><th>説明</th>
+  </tr>
+  <tr>
+    <td>id</td>
+    <td><code>uuid</code></td>
+    <td><span class="constraint-badge badge-pk">PK</span></td>
+    <td>Supabase認証が自動生成するユーザーID</td>
+  </tr>
+  <tr>
+    <td colspan="4" style="color:#888;font-size:13px;">* その他のカラム（email, encrypted_password等）はSupabaseが内部管理</td>
+  </tr>
+</table>
+
+<!-- public.users -->
+<div class="table-header">
+  <span class="tname">public.users</span>
+  <span class="tdesc">ユーザー情報</span>
+</div>
+<table>
+  <tr>
+    <th>カラム名</th><th>データ型</th><th>制約</th><th>説明</th>
+  </tr>
+  <tr>
+    <td>id</td>
+    <td><code>uuid</code></td>
+    <td>
+      <span class="constraint-badge badge-pk">PK</span>
+      <span class="constraint-badge badge-fk">FK</span>
+    </td>
+    <td>ユーザーID（auth.users.id への参照、ON DELETE CASCADE）</td>
+  </tr>
+  <tr>
+    <td>email</td>
+    <td><code>text</code></td>
+    <td><span class="constraint-badge badge-nn">NOT NULL</span></td>
+    <td>メールアドレス</td>
+  </tr>
+  <tr>
+    <td>created_at</td>
+    <td><code>timestamptz</code></td>
+    <td>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-df">DEFAULT</span>
+    </td>
+    <td>アカウント作成日時（デフォルト: now()）</td>
+  </tr>
+</table>
+
+<!-- public.quiz_sessions -->
+<div class="table-header">
+  <span class="tname">public.quiz_sessions</span>
+  <span class="tdesc">クイズセッション（1回のゲーム = 5問）</span>
+</div>
+<table>
+  <tr>
+    <th>カラム名</th><th>データ型</th><th>制約</th><th>説明</th>
+  </tr>
+  <tr>
+    <td>id</td>
+    <td><code>uuid</code></td>
+    <td>
+      <span class="constraint-badge badge-pk">PK</span>
+      <span class="constraint-badge badge-df">DEFAULT</span>
+    </td>
+    <td>セッションID（デフォルト: gen_random_uuid()）</td>
+  </tr>
+  <tr>
+    <td>user_id</td>
+    <td><code>uuid</code></td>
+    <td>
+      <span class="constraint-badge badge-fk">FK</span>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+    </td>
+    <td>ユーザーID（public.users.id への参照、ON DELETE CASCADE）</td>
+  </tr>
+  <tr>
+    <td>genre</td>
+    <td><code>text</code></td>
+    <td>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-ck">CHECK</span>
+    </td>
+    <td>ジャンル（'geography' / 'tourism' / 'food'）</td>
+  </tr>
+  <tr>
+    <td>difficulty</td>
+    <td><code>text</code></td>
+    <td>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-ck">CHECK</span>
+    </td>
+    <td>難易度（'beginner' / 'intermediate' / 'advanced'）</td>
+  </tr>
+  <tr>
+    <td>score</td>
+    <td><code>int</code></td>
+    <td>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-df">DEFAULT</span>
+      <span class="constraint-badge badge-ck">CHECK</span>
+    </td>
+    <td>スコア（デフォルト: 0、範囲: 0~5）</td>
+  </tr>
+  <tr>
+    <td>played_at</td>
+    <td><code>timestamptz</code></td>
+    <td>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-df">DEFAULT</span>
+    </td>
+    <td>プレイ日時（デフォルト: now()）</td>
+  </tr>
+</table>
+
+<!-- public.quizzes -->
+<div class="table-header">
+  <span class="tname">public.quizzes</span>
+  <span class="tdesc">クイズ問題（AI生成された各問題）</span>
+</div>
+<table>
+  <tr>
+    <th>カラム名</th><th>データ型</th><th>制約</th><th>説明</th>
+  </tr>
+  <tr>
+    <td>id</td>
+    <td><code>uuid</code></td>
+    <td>
+      <span class="constraint-badge badge-pk">PK</span>
+      <span class="constraint-badge badge-df">DEFAULT</span>
+    </td>
+    <td>クイズID（デフォルト: gen_random_uuid()）</td>
+  </tr>
+  <tr>
+    <td>session_id</td>
+    <td><code>uuid</code></td>
+    <td>
+      <span class="constraint-badge badge-fk">FK</span>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+    </td>
+    <td>セッションID（public.quiz_sessions.id への参照、ON DELETE CASCADE）</td>
+  </tr>
+  <tr>
+    <td>question_text</td>
+    <td><code>text</code></td>
+    <td><span class="constraint-badge badge-nn">NOT NULL</span></td>
+    <td>問題文</td>
+  </tr>
+  <tr>
+    <td>choice_1</td>
+    <td><code>text</code></td>
+    <td><span class="constraint-badge badge-nn">NOT NULL</span></td>
+    <td>選択肢1</td>
+  </tr>
+  <tr>
+    <td>choice_2</td>
+    <td><code>text</code></td>
+    <td><span class="constraint-badge badge-nn">NOT NULL</span></td>
+    <td>選択肢2</td>
+  </tr>
+  <tr>
+    <td>choice_3</td>
+    <td><code>text</code></td>
+    <td><span class="constraint-badge badge-nn">NOT NULL</span></td>
+    <td>選択肢3</td>
+  </tr>
+  <tr>
+    <td>correct_answer</td>
+    <td><code>text</code></td>
+    <td><span class="constraint-badge badge-nn">NOT NULL</span></td>
+    <td>正解テキスト</td>
+  </tr>
+  <tr>
+    <td>explanation</td>
+    <td><code>text</code></td>
+    <td><span class="constraint-badge badge-nn">NOT NULL</span></td>
+    <td>解説文</td>
+  </tr>
+  <tr>
+    <td>genre</td>
+    <td><code>text</code></td>
+    <td>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-ck">CHECK</span>
+    </td>
+    <td>ジャンル（'geography' / 'tourism' / 'food'）</td>
+  </tr>
+  <tr>
+    <td>difficulty</td>
+    <td><code>text</code></td>
+    <td>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-ck">CHECK</span>
+    </td>
+    <td>難易度（'beginner' / 'intermediate' / 'advanced'）</td>
+  </tr>
+  <tr>
+    <td>prefecture</td>
+    <td><code>text</code></td>
+    <td><span class="constraint-badge badge-nn">NOT NULL</span></td>
+    <td>出題対象の都道府県</td>
+  </tr>
+  <tr>
+    <td>question_order</td>
+    <td><code>int</code></td>
+    <td>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-ck">CHECK</span>
+    </td>
+    <td>出題順（範囲: 1~5）</td>
+  </tr>
+  <tr>
+    <td>created_at</td>
+    <td><code>timestamptz</code></td>
+    <td>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-df">DEFAULT</span>
+    </td>
+    <td>作成日時（デフォルト: now()）</td>
+  </tr>
+</table>
+
+<!-- public.answers -->
+<div class="table-header">
+  <span class="tname">public.answers</span>
+  <span class="tdesc">回答履歴（ユーザーの各問題への回答）</span>
+</div>
+<table>
+  <tr>
+    <th>カラム名</th><th>データ型</th><th>制約</th><th>説明</th>
+  </tr>
+  <tr>
+    <td>id</td>
+    <td><code>uuid</code></td>
+    <td>
+      <span class="constraint-badge badge-pk">PK</span>
+      <span class="constraint-badge badge-df">DEFAULT</span>
+    </td>
+    <td>回答ID（デフォルト: gen_random_uuid()）</td>
+  </tr>
+  <tr>
+    <td>user_id</td>
+    <td><code>uuid</code></td>
+    <td>
+      <span class="constraint-badge badge-fk">FK</span>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+    </td>
+    <td>ユーザーID（public.users.id への参照、ON DELETE CASCADE）</td>
+  </tr>
+  <tr>
+    <td>quiz_id</td>
+    <td><code>uuid</code></td>
+    <td>
+      <span class="constraint-badge badge-fk">FK</span>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+    </td>
+    <td>クイズID（public.quizzes.id への参照、ON DELETE CASCADE）</td>
+  </tr>
+  <tr>
+    <td>selected_answer</td>
+    <td><code>text</code></td>
+    <td><span class="constraint-badge badge-nn">NOT NULL</span></td>
+    <td>ユーザーが選択した回答</td>
+  </tr>
+  <tr>
+    <td>is_correct</td>
+    <td><code>boolean</code></td>
+    <td><span class="constraint-badge badge-nn">NOT NULL</span></td>
+    <td>正解かどうか（true / false）</td>
+  </tr>
+  <tr>
+    <td>answered_at</td>
+    <td><code>timestamptz</code></td>
+    <td>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-df">DEFAULT</span>
+    </td>
+    <td>回答日時（デフォルト: now()）</td>
+  </tr>
+</table>
+
+<!-- public.prefecture_progress -->
+<div class="table-header">
+  <span class="tname">public.prefecture_progress</span>
+  <span class="tdesc">都道府県の達成状況（ユーザーごとの最高クリア難易度）</span>
+</div>
+<table>
+  <tr>
+    <th>カラム名</th><th>データ型</th><th>制約</th><th>説明</th>
+  </tr>
+  <tr>
+    <td>id</td>
+    <td><code>uuid</code></td>
+    <td>
+      <span class="constraint-badge badge-pk">PK</span>
+      <span class="constraint-badge badge-df">DEFAULT</span>
+    </td>
+    <td>進捗ID（デフォルト: gen_random_uuid()）</td>
+  </tr>
+  <tr>
+    <td>user_id</td>
+    <td><code>uuid</code></td>
+    <td>
+      <span class="constraint-badge badge-fk">FK</span>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-uq">UNIQUE組</span>
+    </td>
+    <td>ユーザーID（public.users.id への参照、ON DELETE CASCADE）</td>
+  </tr>
+  <tr>
+    <td>prefecture</td>
+    <td><code>text</code></td>
+    <td>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-uq">UNIQUE組</span>
+    </td>
+    <td>都道府県名（user_id との複合ユニーク制約）</td>
+  </tr>
+  <tr>
+    <td>max_difficulty</td>
+    <td><code>text</code></td>
+    <td>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-ck">CHECK</span>
+    </td>
+    <td>最高クリア難易度（'beginner' / 'intermediate' / 'advanced'）</td>
+  </tr>
+  <tr>
+    <td>updated_at</td>
+    <td><code>timestamptz</code></td>
+    <td>
+      <span class="constraint-badge badge-nn">NOT NULL</span>
+      <span class="constraint-badge badge-df">DEFAULT</span>
+    </td>
+    <td>更新日時（デフォルト: now()）</td>
+  </tr>
+</table>
+
+<!-- ===== 3. リレーション一覧 ===== -->
+<h2>3. リレーション一覧</h2>
+
+<div class="description">
+  すべての外部キーに <strong>ON DELETE CASCADE</strong> が設定されています。<br>
+  親レコードが削除されると、子レコードも自動的に削除されます。
+</div>
+
+<table>
+  <tr>
+    <th>親テーブル</th><th>子テーブル</th><th>外部キー</th><th>関係</th><th>説明</th>
+  </tr>
+  <tr>
+    <td>auth.users</td>
+    <td>public.users</td>
+    <td>users.id → auth.users.id</td>
+    <td>1 : 0..1</td>
+    <td>Supabase認証ユーザーとアプリユーザーの1対1対応</td>
+  </tr>
+  <tr>
+    <td>public.users</td>
+    <td>public.quiz_sessions</td>
+    <td>quiz_sessions.user_id → users.id</td>
+    <td>1 : 0..N</td>
+    <td>1人のユーザーが複数のクイズセッションをプレイ</td>
+  </tr>
+  <tr>
+    <td>public.quiz_sessions</td>
+    <td>public.quizzes</td>
+    <td>quizzes.session_id → quiz_sessions.id</td>
+    <td>1 : 0..N</td>
+    <td>1つのセッションに最大5つのクイズ問題</td>
+  </tr>
+  <tr>
+    <td>public.users</td>
+    <td>public.answers</td>
+    <td>answers.user_id → users.id</td>
+    <td>1 : 0..N</td>
+    <td>1人のユーザーが複数の回答を記録</td>
+  </tr>
+  <tr>
+    <td>public.quizzes</td>
+    <td>public.answers</td>
+    <td>answers.quiz_id → quizzes.id</td>
+    <td>1 : 0..N</td>
+    <td>1つのクイズ問題に対する回答（通常1つ）</td>
+  </tr>
+  <tr>
+    <td>public.users</td>
+    <td>public.prefecture_progress</td>
+    <td>prefecture_progress.user_id → users.id</td>
+    <td>1 : 0..N</td>
+    <td>1人のユーザーにつき最大47都道府県の進捗</td>
+  </tr>
+</table>
+
+<!-- ===== 4. RLSポリシー一覧 ===== -->
+<h2>4. RLSポリシー一覧</h2>
+
+<div class="description">
+  すべてのテーブルで <strong>Row Level Security（RLS）</strong> が有効化されています。<br>
+  各ポリシーは <code>auth.uid()</code> を使用して、ログイン中のユーザーが自分自身のデータのみにアクセスできるように制限しています。
+</div>
+
+<!-- users RLS -->
+<h3>public.users</h3>
+<table class="rls-table">
+  <tr>
+    <th>ポリシー名</th><th>操作</th><th>条件</th><th>説明</th>
+  </tr>
+  <tr>
+    <td>Users can view own data</td>
+    <td><span class="policy-op op-select">SELECT</span></td>
+    <td><code>auth.uid() = id</code></td>
+    <td>自分のユーザー情報のみ閲覧可能</td>
+  </tr>
+  <tr>
+    <td>Users can insert own data</td>
+    <td><span class="policy-op op-insert">INSERT</span></td>
+    <td><code>auth.uid() = id</code></td>
+    <td>自分のユーザー情報のみ登録可能</td>
+  </tr>
+</table>
+
+<!-- quiz_sessions RLS -->
+<h3>public.quiz_sessions</h3>
+<table class="rls-table">
+  <tr>
+    <th>ポリシー名</th><th>操作</th><th>条件</th><th>説明</th>
+  </tr>
+  <tr>
+    <td>Users can view own sessions</td>
+    <td><span class="policy-op op-select">SELECT</span></td>
+    <td><code>auth.uid() = user_id</code></td>
+    <td>自分のセッションのみ閲覧可能</td>
+  </tr>
+  <tr>
+    <td>Users can insert own sessions</td>
+    <td><span class="policy-op op-insert">INSERT</span></td>
+    <td><code>auth.uid() = user_id</code></td>
+    <td>自分のセッションのみ作成可能</td>
+  </tr>
+</table>
+
+<!-- quizzes RLS -->
+<h3>public.quizzes</h3>
+<table class="rls-table">
+  <tr>
+    <th>ポリシー名</th><th>操作</th><th>条件</th><th>説明</th>
+  </tr>
+  <tr>
+    <td>Users can view own quizzes</td>
+    <td><span class="policy-op op-select">SELECT</span></td>
+    <td><code>EXISTS (SELECT 1 FROM quiz_sessions WHERE quiz_sessions.id = quizzes.session_id AND quiz_sessions.user_id = auth.uid())</code></td>
+    <td>自分のセッションに属するクイズのみ閲覧可能（quiz_sessions経由で判定）</td>
+  </tr>
+  <tr>
+    <td>Users can insert own quizzes</td>
+    <td><span class="policy-op op-insert">INSERT</span></td>
+    <td><code>EXISTS (SELECT 1 FROM quiz_sessions WHERE quiz_sessions.id = quizzes.session_id AND quiz_sessions.user_id = auth.uid())</code></td>
+    <td>自分のセッションに属するクイズのみ作成可能（quiz_sessions経由で判定）</td>
+  </tr>
+</table>
+
+<!-- answers RLS -->
+<h3>public.answers</h3>
+<table class="rls-table">
+  <tr>
+    <th>ポリシー名</th><th>操作</th><th>条件</th><th>説明</th>
+  </tr>
+  <tr>
+    <td>Users can view own answers</td>
+    <td><span class="policy-op op-select">SELECT</span></td>
+    <td><code>auth.uid() = user_id</code></td>
+    <td>自分の回答のみ閲覧可能</td>
+  </tr>
+  <tr>
+    <td>Users can insert own answers</td>
+    <td><span class="policy-op op-insert">INSERT</span></td>
+    <td><code>auth.uid() = user_id</code></td>
+    <td>自分の回答のみ登録可能</td>
+  </tr>
+</table>
+
+<!-- prefecture_progress RLS -->
+<h3>public.prefecture_progress</h3>
+<table class="rls-table">
+  <tr>
+    <th>ポリシー名</th><th>操作</th><th>条件</th><th>説明</th>
+  </tr>
+  <tr>
+    <td>Users can view own progress</td>
+    <td><span class="policy-op op-select">SELECT</span></td>
+    <td><code>auth.uid() = user_id</code></td>
+    <td>自分の進捗のみ閲覧可能</td>
+  </tr>
+  <tr>
+    <td>Users can insert own progress</td>
+    <td><span class="policy-op op-insert">INSERT</span></td>
+    <td><code>auth.uid() = user_id</code></td>
+    <td>自分の進捗のみ登録可能</td>
+  </tr>
+  <tr>
+    <td>Users can update own progress</td>
+    <td><span class="policy-op op-update">UPDATE</span></td>
+    <td><code>auth.uid() = user_id</code></td>
+    <td>自分の進捗のみ更新可能（難易度クリア時に更新）</td>
+  </tr>
+</table>
+
+<!-- ===== 5. CHECK制約一覧 ===== -->
+<h2>5. CHECK制約一覧</h2>
+
+<div class="description">
+  各テーブルで使用されているCHECK制約の詳細です。<br>
+  ジャンル・難易度は列挙値（ENUM相当）、スコア・出題順は範囲指定で制御しています。
+</div>
+
+<table>
+  <tr>
+    <th>テーブル</th><th>カラム</th><th>CHECK条件</th><th>許可される値</th>
+  </tr>
+  <tr>
+    <td>quiz_sessions</td>
+    <td>genre</td>
+    <td><code>genre IN ('geography', 'tourism', 'food')</code></td>
+    <td>geography（地理）/ tourism（観光）/ food（グルメ）</td>
+  </tr>
+  <tr>
+    <td>quiz_sessions</td>
+    <td>difficulty</td>
+    <td><code>difficulty IN ('beginner', 'intermediate', 'advanced')</code></td>
+    <td>beginner（初級）/ intermediate（中級）/ advanced（上級）</td>
+  </tr>
+  <tr>
+    <td>quiz_sessions</td>
+    <td>score</td>
+    <td><code>score >= 0 AND score <= 5</code></td>
+    <td>0 ~ 5（5問中の正答数）</td>
+  </tr>
+  <tr>
+    <td>quizzes</td>
+    <td>genre</td>
+    <td><code>genre IN ('geography', 'tourism', 'food')</code></td>
+    <td>geography（地理）/ tourism（観光）/ food（グルメ）</td>
+  </tr>
+  <tr>
+    <td>quizzes</td>
+    <td>difficulty</td>
+    <td><code>difficulty IN ('beginner', 'intermediate', 'advanced')</code></td>
+    <td>beginner（初級）/ intermediate（中級）/ advanced（上級）</td>
+  </tr>
+  <tr>
+    <td>quizzes</td>
+    <td>question_order</td>
+    <td><code>question_order >= 1 AND question_order <= 5</code></td>
+    <td>1 ~ 5（セッション内の出題順）</td>
+  </tr>
+  <tr>
+    <td>prefecture_progress</td>
+    <td>max_difficulty</td>
+    <td><code>max_difficulty IN ('beginner', 'intermediate', 'advanced')</code></td>
+    <td>beginner（初級）/ intermediate（中級）/ advanced（上級）</td>
+  </tr>
+</table>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#FAF8F5',
+      primaryBorderColor: '#1B2A4A',
+      primaryTextColor: '#1B2A4A',
+      lineColor: '#C53D43',
+      secondaryColor: '#f0f0e8',
+      tertiaryColor: '#E3F2FD',
+      fontSize: '14px'
+    },
+    er: {
+      diagramPadding: 30,
+      layoutDirection: 'TB',
+      minEntityWidth: 100,
+      minEntityHeight: 75,
+      entityPadding: 15,
+      useMaxWidth: true
+    }
+  });
+</script>
+
+</body>
+</html>
