@@ -14,10 +14,18 @@ export async function signup(formData: FormData) {
     redirect("/register?error=" + encodeURIComponent("パスワードが一致しません"));
   }
 
-  if (password.length < 6) {
+  if (password.length < 8) {
     redirect(
       "/register?error=" +
-        encodeURIComponent("パスワードは6文字以上で入力してください")
+        encodeURIComponent("パスワードは8文字以上で入力してください")
+    );
+  }
+
+  const agreeTerms = formData.get("agreeTerms");
+  if (!agreeTerms) {
+    redirect(
+      "/register?error=" +
+        encodeURIComponent("利用規約に同意してください")
     );
   }
 

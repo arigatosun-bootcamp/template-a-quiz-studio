@@ -48,8 +48,8 @@ export default async function RegisterPage({
               id="password"
               name="password"
               type="password"
-              placeholder="6文字以上"
-              minLength={6}
+              placeholder="8文字以上"
+              minLength={8}
               required
             />
           </div>
@@ -64,9 +64,30 @@ export default async function RegisterPage({
               name="confirmPassword"
               type="password"
               placeholder="もう一度入力"
-              minLength={6}
+              minLength={8}
               required
             />
+          </div>
+
+          <div className={styles.checkboxGroup}>
+            <input
+              className={styles.checkbox}
+              id="agreeTerms"
+              name="agreeTerms"
+              type="checkbox"
+              value="true"
+              required
+            />
+            <label className={styles.checkboxLabel} htmlFor="agreeTerms">
+              <a href="/terms" target="_blank" style={{ color: "#C84B31" }}>
+                利用規約
+              </a>
+              と
+              <a href="/privacy" target="_blank" style={{ color: "#C84B31" }}>
+                プライバシーポリシー
+              </a>
+              に同意します
+            </label>
           </div>
 
           <button className={styles.primaryButton} formAction={signup}>
