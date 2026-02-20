@@ -1,0 +1,189 @@
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+/* アカウント情報 */
+.section {
+  padding: 1.25rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background-color: #fff;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.infoLabel {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.infoValue {
+  font-size: 0.875rem;
+  color: #333;
+}
+
+/* 危険エリア */
+.dangerSection {
+  padding: 1.25rem;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  background-color: #fff;
+  margin-top: 2rem;
+}
+
+.dangerTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #dc2626;
+  margin-bottom: 0.5rem;
+}
+
+.dangerDescription {
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.deleteButton {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #dc2626;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #dc2626;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.deleteButton:hover {
+  background-color: #fef2f2;
+}
+
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 確認ダイアログ */
+.dialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.dialog {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 320px;
+  width: 90%;
+  text-align: center;
+}
+
+.dialogTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #dc2626;
+  margin-bottom: 0.75rem;
+}
+
+.dialogText {
+  font-size: 0.875rem;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.dialogActions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.cancelButton {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #333;
+}
+
+.confirmDeleteButton {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  border: none;
+  background: #dc2626;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.confirmDeleteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ローディング */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e5e5;
+  border-top-color: #C84B31;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  font-size: 0.9rem;
+  color: #666;
+}

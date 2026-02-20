@@ -1,0 +1,278 @@
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* 統計カード */
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.statCard {
+  padding: 1rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.statValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #C84B31;
+}
+
+.statUnit {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #999;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+/* 難易度別クリア数 */
+.difficultySection {
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+.difficultyBars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.difficultyBar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.difficultyLabel {
+  font-size: 0.8rem;
+  color: #666;
+  width: 40px;
+  flex-shrink: 0;
+}
+
+.barTrack {
+  flex: 1;
+  height: 8px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.barFillBeginner {
+  composes: barFill;
+  background-color: #f4a261;
+}
+
+.barFillIntermediate {
+  composes: barFill;
+  background-color: #C84B31;
+}
+
+.barFillAdvanced {
+  composes: barFill;
+  background-color: #8b2500;
+}
+
+.difficultyCount {
+  font-size: 0.75rem;
+  color: #999;
+  width: 30px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ジャンル別正解率 */
+.genreSection {
+  margin-bottom: 1.5rem;
+}
+
+.genreGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.genreCard {
+  padding: 0.75rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.genreIcon {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.genreName {
+  font-size: 0.7rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.genreAccuracy {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #C84B31;
+}
+
+.genreNoData {
+  font-size: 0.8rem;
+  color: #ccc;
+}
+
+/* 日本地図 */
+.mapSection {
+  margin-bottom: 1.5rem;
+}
+
+.mapContainer {
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.mapSvg {
+  width: 100%;
+  height: auto;
+}
+
+/* 凡例 */
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  color: #666;
+}
+
+.legendColor {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid #ddd;
+}
+
+/* 都道府県ポップアップ */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 1.25rem;
+  min-width: 200px;
+  text-align: center;
+  z-index: 200;
+}
+
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 199;
+}
+
+.popupName {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.popupStatus {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.popupDifficulty {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #C84B31;
+  margin-top: 0.25rem;
+}
+
+/* ローディング */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e5e5;
+  border-top-color: #C84B31;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #999;
+  font-size: 0.9rem;
+}
