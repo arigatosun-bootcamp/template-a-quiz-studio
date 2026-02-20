@@ -1,5 +1,8 @@
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { checkDailyUsage } from "@/lib/usage";
+import StepSelector from "./StepSelector";
+import DailyLimitNotice from "./DailyLimitNotice";
+import styles from "./top.module.css";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -7,61 +10,34 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  return (
-    <div style={{ padding: "2rem", maxWidth: "600px", margin: "0 auto" }}>
-      <h1 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
-        Quiz Studio
-      </h1>
+  let todayCount = 0;
+  let canPlay = true;
 
-      {user ? (
-        <div>
-          <p style={{ marginBottom: "1rem" }}>
-            ログイン中: {user.email}
-          </p>
-          <form action="/auth/signout" method="post">
-            <button
-              type="submit"
-              style={{
-                padding: "0.5rem 1rem",
-                backgroundColor: "#dc2626",
-                color: "#fff",
-                border: "none",
-                borderRadius: "8px",
-                cursor: "pointer",
-              }}
-            >
-              ログアウト
-            </button>
-          </form>
-        </div>
-      ) : (
-        <div style={{ display: "flex", gap: "1rem" }}>
-          <Link
-            href="/login"
-            style={{
-              padding: "0.5rem 1rem",
-              backgroundColor: "#4A90D9",
-              color: "#fff",
-              borderRadius: "8px",
-              textDecoration: "none",
-            }}
-          >
-            ログイン
-          </Link>
-          <Link
-            href="/register"
-            style={{
-              padding: "0.5rem 1rem",
-              backgroundColor: "#16a34a",
-              color: "#fff",
-              borderRadius: "8px",
-              textDecoration: "none",
-            }}
-          >
-            新規登録
-          </Link>
-        </div>
+  if (user) {
+    try {
+      const usage = await checkDailyUsage(supabase, user.id);
+      todayCount = usage.todayCount;
+      canPlay = usage.canPlay;
+    } catch {
+      // 利用回数取得に失敗してもページは表示する
+    }
+  }
+
+  return (
+    <div className={styles.container}>
+      {user && (
+        <p className={styles.greeting}>
+          ようこそ、<strong>{user.email}</strong> さん
+        </p>
       )}
+
+      <DailyLimitNotice todayCount={todayCount} canPlay={canPlay} />
+
+      <StepSelector canPlay={canPlay} />
+
+      <div className={styles.mapPlaceholder}>
+        🗾 日本地図（達成状況）はDay 4で実装予定
+      </div>
     </div>
   );
 }
