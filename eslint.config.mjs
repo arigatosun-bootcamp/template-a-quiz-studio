@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Claude Code hooks/scripts
     ".claude/**",
+    // Nested template project (separate git repo)
+    "template-a-quiz-studio/**",
   ]),
 ]);
 
