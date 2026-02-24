@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { signup } from "./actions";
 import styles from "../auth.module.css";
+
+export const metadata: Metadata = { title: "新規登録" };
 
 export default async function RegisterPage({
   searchParams,
