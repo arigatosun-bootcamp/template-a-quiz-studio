@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { login, loginWithGoogle } from "./actions";
 import styles from "../auth.module.css";
+
+export const metadata: Metadata = { title: "ログイン" };
 
 export default async function LoginPage({
   searchParams,

@@ -17,7 +17,7 @@ export interface GeneratedQuiz {
   prefecture: string;
 }
 
-function buildPrompt(
+export function buildPrompt(
   genre: Genre,
   difficulty: Difficulty,
   prefectures: string[]
@@ -55,7 +55,7 @@ function buildPrompt(
 - 解説は正解の理由が分かる内容にしてください`;
 }
 
-function parseQuizResponse(text: string): GeneratedQuiz[] {
+export function parseQuizResponse(text: string): GeneratedQuiz[] {
   // JSONブロックの抽出（```json ... ``` の場合に対応）
   const jsonMatch = text.match(/\[[\s\S]*\]/);
   if (!jsonMatch) {
