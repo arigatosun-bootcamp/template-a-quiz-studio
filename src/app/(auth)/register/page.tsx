@@ -82,11 +82,11 @@ export default async function RegisterPage({
               required
             />
             <label className={styles.checkboxLabel} htmlFor="agreeTerms">
-              <a href="/terms" target="_blank" style={{ color: "#C84B31" }}>
+              <a href="/terms" target="_blank" style={{ color: "#C53D43" }}>
                 利用規約
               </a>
               と
-              <a href="/privacy" target="_blank" style={{ color: "#C84B31" }}>
+              <a href="/privacy" target="_blank" style={{ color: "#C53D43" }}>
                 プライバシーポリシー
               </a>
               に同意します

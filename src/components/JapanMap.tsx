@@ -2,12 +2,12 @@
 
 import type { Difficulty } from "@/lib/constants";
 
-// 都道府県の色分け
+// 都道府県の色分け（仕様書準拠: 緑系統）
 const COLORS: Record<string, string> = {
-  none: "#e5e5e5",
-  beginner: "#f4a261",
-  intermediate: "#C84B31",
-  advanced: "#8b2500",
+  none: "#D1D5DB",
+  beginner: "#90C978",
+  intermediate: "#5B8C3E",
+  advanced: "#2D5A1E",
 };
 
 interface PrefectureData {

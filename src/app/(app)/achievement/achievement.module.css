@@ -29,7 +29,7 @@
 .statValue {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #C84B31;
+  color: #C53D43;
 }
 
 .statUnit {
@@ -91,17 +91,17 @@
 
 .barFillBeginner {
   composes: barFill;
-  background-color: #f4a261;
+  background-color: #90C978;
 }
 
 .barFillIntermediate {
   composes: barFill;
-  background-color: #C84B31;
+  background-color: #5B8C3E;
 }
 
 .barFillAdvanced {
   composes: barFill;
-  background-color: #8b2500;
+  background-color: #2D5A1E;
 }
 
 .difficultyCount {
@@ -145,7 +145,7 @@
 .genreAccuracy {
   font-size: 1rem;
   font-weight: 700;
-  color: #C84B31;
+  color: #C53D43;
 }
 
 .genreNoData {
@@ -236,7 +236,7 @@
 .popupDifficulty {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #C84B31;
+  color: #C53D43;
   margin-top: 0.25rem;
 }
 
@@ -254,7 +254,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid #e5e5e5;
-  border-top-color: #C84B31;
+  border-top-color: #C53D43;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }

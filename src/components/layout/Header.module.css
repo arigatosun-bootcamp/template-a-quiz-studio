@@ -5,7 +5,7 @@
   padding: 0 1.5rem;
   height: 56px;
   background-color: #ffffff;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 2px solid #C4A962;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -14,7 +14,7 @@
 .logo {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #C84B31;
+  color: #C53D43;
   text-decoration: none;
 }
 
@@ -32,12 +32,12 @@
 }
 
 .navLink:hover {
-  color: #C84B31;
+  color: #C53D43;
 }
 
 .navLinkActive {
   composes: navLink;
-  color: #C84B31;
+  color: #C53D43;
   font-weight: 600;
 }
 
@@ -129,7 +129,7 @@
 
 .mobileNavLinkActive {
   composes: mobileNavLink;
-  color: #C84B31;
+  color: #C53D43;
   font-weight: 600;
 }
 
