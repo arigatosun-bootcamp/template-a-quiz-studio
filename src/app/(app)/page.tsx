@@ -1,7 +1,9 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { checkDailyUsage } from "@/lib/usage";
 import StepSelector from "./StepSelector";
 import DailyLimitNotice from "./DailyLimitNotice";
+import TopMapSection from "./TopMapSection";
 import styles from "./top.module.css";
 
 export default async function Home() {
@@ -35,9 +37,11 @@ export default async function Home() {
 
       <StepSelector canPlay={canPlay} />
 
-      <div className={styles.mapPlaceholder}>
-        🗾 日本地図（達成状況）はDay 4で実装予定
-      </div>
+      <TopMapSection />
+
+      <Link href="/history" className={styles.historyLink}>
+        回答履歴を見る
+      </Link>
     </div>
   );
 }

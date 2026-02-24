@@ -32,7 +32,7 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background-color: #C84B31;
+  background-color: #C4A962;
   color: #fff;
   font-size: 0.75rem;
   margin-right: 0.5rem;
@@ -57,15 +57,15 @@
 }
 
 .optionButton:hover {
-  border-color: #C84B31;
-  background-color: #fef2f0;
+  border-color: #C53D43;
+  background-color: #fef0f0;
 }
 
 .optionButtonSelected {
   composes: optionButton;
-  border-color: #C84B31;
-  background-color: #fef2f0;
-  color: #C84B31;
+  border-color: #C53D43;
+  background-color: #fef0f0;
+  color: #C53D43;
   font-weight: 600;
 }
 
@@ -82,7 +82,7 @@
   padding: 1rem;
   border: none;
   border-radius: 12px;
-  background-color: #C84B31;
+  background-color: #C53D43;
   color: #fff;
   font-size: 1.1rem;
   font-weight: 700;
@@ -99,6 +99,28 @@
   background-color: #ccc;
   cursor: not-allowed;
   opacity: 1;
+}
+
+/* 回答履歴リンク */
+.historyLink {
+  display: block;
+  width: 100%;
+  padding: 0.875rem;
+  margin-top: 1rem;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  background-color: #fff;
+  color: #555;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.historyLink:hover {
+  border-color: #C4A962;
+  background-color: #faf8f0;
 }
 
 /* 利用上限通知 */
@@ -130,13 +152,116 @@
   margin: 0.25rem 0 0;
 }
 
-/* 日本地図プレースホルダー */
-.mapPlaceholder {
+/* 日本地図セクション */
+.mapSection {
   margin-top: 1.5rem;
-  padding: 2rem;
-  border: 2px dashed #ddd;
+  padding: 1.25rem;
+  border: 1px solid #e5e5e5;
   border-radius: 12px;
+  background-color: #fff;
+  position: relative;
+}
+
+.mapHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.mapTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.mapDetailLink {
+  font-size: 0.8rem;
+  color: #C53D43;
+  text-decoration: none;
+}
+
+.mapDetailLink:hover {
+  text-decoration: underline;
+}
+
+.mapStats {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0 0 0.75rem;
+}
+
+.mapContainer {
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.mapLoading {
   text-align: center;
   color: #999;
   font-size: 0.875rem;
+  padding: 2rem 0;
+}
+
+.mapLegend {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.legendColor {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+/* 都道府県ポップアップ */
+.popupOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
+
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  z-index: 11;
+}
+
+.popupName {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.popupDifficulty {
+  font-size: 0.85rem;
+  color: #C53D43;
+  margin: 0;
+}
+
+.popupStatus {
+  font-size: 0.85rem;
+  color: #999;
+  margin: 0;
 }

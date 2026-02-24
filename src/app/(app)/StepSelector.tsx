@@ -57,7 +57,10 @@ export default function StepSelector({ canPlay }: StepSelectorProps) {
                   ? styles.optionButtonSelected
                   : styles.optionButton
               }
-              onClick={() => setGenre(g)}
+              onClick={() => {
+                setGenre(g);
+                setDifficulty(null);
+              }}
               disabled={!canPlay}
             >
               <span className={styles.optionIcon}>{GENRE_ICONS[g]}</span>
