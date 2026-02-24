@@ -1,0 +1,142 @@
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.greeting {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.greeting strong {
+  color: #333;
+}
+
+/* ステップセレクター */
+.stepSection {
+  margin-bottom: 1.5rem;
+}
+
+.stepLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+.stepNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: #C84B31;
+  color: #fff;
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+}
+
+.optionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.optionButton {
+  padding: 0.875rem 0.5rem;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  background-color: #fff;
+  font-size: 0.9rem;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+  text-align: center;
+}
+
+.optionButton:hover {
+  border-color: #C84B31;
+  background-color: #fef2f0;
+}
+
+.optionButtonSelected {
+  composes: optionButton;
+  border-color: #C84B31;
+  background-color: #fef2f0;
+  color: #C84B31;
+  font-weight: 600;
+}
+
+.optionIcon {
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+/* スタートボタン */
+.startButton {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  background-color: #C84B31;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-top: 0.5rem;
+}
+
+.startButton:hover {
+  opacity: 0.9;
+}
+
+.startButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+/* 利用上限通知 */
+.limitNotice {
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  margin-bottom: 1.5rem;
+}
+
+.limitReached {
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: #fee2e2;
+  border: 1px solid #dc2626;
+  margin-bottom: 1.5rem;
+}
+
+.limitText {
+  font-size: 0.875rem;
+  color: #333;
+  margin: 0;
+}
+
+.limitCount {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0.25rem 0 0;
+}
+
+/* 日本地図プレースホルダー */
+.mapPlaceholder {
+  margin-top: 1.5rem;
+  padding: 2rem;
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  text-align: center;
+  color: #999;
+  font-size: 0.875rem;
+}
