@@ -9,6 +9,7 @@ import {
   type Difficulty,
 } from "@/lib/constants";
 import JapanMap from "@/components/JapanMap";
+import type { AchievementResponse } from "@/types/api";
 import styles from "./achievement.module.css";
 
 const GENRE_ICONS: Record<Genre, string> = {
@@ -17,31 +18,8 @@ const GENRE_ICONS: Record<Genre, string> = {
   food: "🍣",
 };
 
-interface PrefectureProgress {
-  prefecture: string;
-  maxDifficulty: Difficulty;
-}
-
-interface Stats {
-  clearedCount: number;
-  totalPrefectures: number;
-  difficultyBreakdown: Record<string, number>;
-  totalAnswers: number;
-  totalCorrect: number;
-  overallAccuracy: number;
-  genreAccuracy: Record<
-    string,
-    { totalAnswers: number; totalCorrect: number; accuracy: number }
-  >;
-}
-
-interface AchievementData {
-  prefectureProgress: PrefectureProgress[];
-  stats: Stats;
-}
-
 export default function AchievementPage() {
-  const [data, setData] = useState<AchievementData | null>(null);
+  const [data, setData] = useState<AchievementResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedPref, setSelectedPref] = useState<{
     name: string;
@@ -177,28 +155,28 @@ export default function AchievementPage() {
           <span className={styles.legendItem}>
             <span
               className={styles.legendColor}
-              style={{ backgroundColor: "#e5e5e5" }}
+              style={{ backgroundColor: "#D1D5DB" }}
             />
             未挑戦
           </span>
           <span className={styles.legendItem}>
             <span
               className={styles.legendColor}
-              style={{ backgroundColor: "#f4a261" }}
+              style={{ backgroundColor: "#90C978" }}
             />
             初級
           </span>
           <span className={styles.legendItem}>
             <span
               className={styles.legendColor}
-              style={{ backgroundColor: "#C84B31" }}
+              style={{ backgroundColor: "#5B8C3E" }}
             />
             中級
           </span>
           <span className={styles.legendItem}>
             <span
               className={styles.legendColor}
-              style={{ backgroundColor: "#8b2500" }}
+              style={{ backgroundColor: "#2D5A1E" }}
             />
             上級
           </span>

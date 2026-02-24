@@ -4,20 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { QUESTIONS_PER_SESSION } from "@/lib/constants";
+import type { QuizItem, AnswerResponse } from "@/types/api";
 import styles from "./quiz.module.css";
-
-interface Quiz {
-  id: string;
-  prefecture: string;
-  question_text: string;
-  choices: string[];
-}
-
-interface AnswerResult {
-  correct: boolean;
-  correctAnswer: string;
-  explanation: string;
-}
 
 export default function QuizPage() {
   const searchParams = useSearchParams();
@@ -27,10 +15,10 @@ export default function QuizPage() {
   const difficulty = searchParams.get("difficulty");
 
   const [sessionId, setSessionId] = useState<string | null>(null);
-  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+  const [quizzes, setQuizzes] = useState<QuizItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
-  const [answerResult, setAnswerResult] = useState<AnswerResult | null>(null);
+  const [answerResult, setAnswerResult] = useState<AnswerResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -97,12 +85,8 @@ export default function QuizPage() {
         throw new Error(data.error || "回答の送信に失敗しました");
       }
 
-      const data = await res.json();
-      setAnswerResult({
-        correct: data.correct,
-        correctAnswer: data.correctAnswer,
-        explanation: data.explanation,
-      });
+      const data: AnswerResponse = await res.json();
+      setAnswerResult(data);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "回答の送信に失敗しました"
@@ -192,9 +176,6 @@ export default function QuizPage() {
           <span className={styles.progressLabel}>
             問題 {currentIndex + 1} / {QUESTIONS_PER_SESSION}
           </span>
-          <span className={styles.progressMeta}>
-            {currentQuiz.prefecture}
-          </span>
         </div>
         <div className={styles.progressBar}>
           <div
@@ -206,11 +187,8 @@ export default function QuizPage() {
         </div>
       </div>
 
-      {/* 都道府県タグ */}
-      <span className={styles.prefectureTag}>📍 {currentQuiz.prefecture}</span>
-
       {/* 問題文 */}
-      <p className={styles.questionText}>{currentQuiz.question_text}</p>
+      <p className={styles.questionText}>{currentQuiz.questionText}</p>
 
       {/* 選択肢 */}
       <div className={styles.choiceList}>
@@ -259,21 +237,21 @@ export default function QuizPage() {
         <>
           <div
             className={
-              answerResult.correct
+              answerResult.isCorrect
                 ? styles.resultCorrect
                 : styles.resultWrong
             }
           >
             <p
               className={
-                answerResult.correct
+                answerResult.isCorrect
                   ? styles.resultLabelCorrect
                   : styles.resultLabelWrong
               }
             >
-              {answerResult.correct ? "⭕ 正解！" : "❌ 不正解"}
+              {answerResult.isCorrect ? "⭕ 正解！" : "❌ 不正解"}
             </p>
-            {!answerResult.correct && (
+            {!answerResult.isCorrect && (
               <p className={styles.correctAnswer}>
                 正解: {answerResult.correctAnswer}
               </p>

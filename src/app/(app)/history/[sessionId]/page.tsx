@@ -4,30 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { GENRE_LABELS, DIFFICULTY_LABELS } from "@/lib/constants";
-import type { Genre, Difficulty } from "@/lib/constants";
+import type { SessionDetailResponse } from "@/types/api";
 import styles from "../history.module.css";
-
-interface Question {
-  questionOrder: number;
-  questionText: string;
-  choices: string[];
-  correctAnswer: string;
-  explanation: string;
-  prefecture: string;
-  selectedAnswer: string | null;
-  isCorrect: boolean | null;
-}
-
-interface SessionDetail {
-  session: {
-    id: string;
-    genre: Genre;
-    difficulty: Difficulty;
-    score: number | null;
-    playedAt: string;
-  };
-  questions: Question[];
-}
 
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr);
@@ -38,7 +16,7 @@ export default function HistoryDetailPage() {
   const params = useParams();
   const sessionId = params.sessionId as string;
 
-  const [data, setData] = useState<SessionDetail | null>(null);
+  const [data, setData] = useState<SessionDetailResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

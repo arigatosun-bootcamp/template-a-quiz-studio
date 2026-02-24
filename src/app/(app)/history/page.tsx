@@ -3,23 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { GENRE_LABELS, DIFFICULTY_LABELS } from "@/lib/constants";
-import type { Genre, Difficulty } from "@/lib/constants";
+import type { SessionSummary, PaginationInfo } from "@/types/api";
 import styles from "./history.module.css";
-
-interface Session {
-  id: string;
-  genre: Genre;
-  difficulty: Difficulty;
-  score: number | null;
-  playedAt: string;
-}
-
-interface Pagination {
-  currentPage: number;
-  totalPages: number;
-  totalCount: number;
-  hasNextPage: boolean;
-}
 
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr);
@@ -27,8 +12,8 @@ function formatDate(dateStr: string): string {
 }
 
 export default function HistoryPage() {
-  const [sessions, setSessions] = useState<Session[]>([]);
-  const [pagination, setPagination] = useState<Pagination | null>(null);
+  const [sessions, setSessions] = useState<SessionSummary[]>([]);
+  const [pagination, setPagination] = useState<PaginationInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
 
