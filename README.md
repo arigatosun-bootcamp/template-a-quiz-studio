@@ -52,6 +52,20 @@ npm run dev
 
 http://localhost:3000 をブラウザで開いて確認
 
+## デプロイ
+
+### 本番環境
+- **URL**: https://template-a-quiz-studio.vercel.app
+- **ホスティング**: Vercel（Hobbyプラン）
+- **ブランチ**: `main` にプッシュすると自動デプロイ
+
+### 環境変数（Vercelに設定済み）
+| 変数名 | 説明 |
+|--------|------|
+| `NEXT_PUBLIC_SUPABASE_URL` | SupabaseプロジェクトのURL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabaseの公開キー |
+| `GEMINI_API_KEY` | Google Gemini APIキー（クイズ生成用） |
+
 ## スクリプト
 
 | コマンド | 説明 |
