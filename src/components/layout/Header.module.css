@@ -1,0 +1,162 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  height: 56px;
+  background-color: #ffffff;
+  border-bottom: 2px solid #C4A962;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #C53D43;
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navLink {
+  font-size: 0.875rem;
+  color: #555;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: #C53D43;
+}
+
+.navLinkActive {
+  composes: navLink;
+  color: #C53D43;
+  font-weight: 600;
+}
+
+.logoutButton {
+  font-size: 0.875rem;
+  color: #999;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.logoutButton:hover {
+  color: #dc2626;
+  background-color: #fee2e2;
+}
+
+/* ハンバーガーメニュー */
+.menuButton {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #333;
+}
+
+.menuIcon {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menuLine {
+  width: 20px;
+  height: 2px;
+  background-color: currentColor;
+  transition: transform 0.2s;
+}
+
+/* モバイルメニュー */
+.mobileOverlay {
+  display: none;
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 99;
+}
+
+.mobileOverlayOpen {
+  composes: mobileOverlay;
+  display: block;
+}
+
+.mobileMenu {
+  display: none;
+  position: fixed;
+  top: 56px;
+  right: 0;
+  width: 250px;
+  background-color: #ffffff;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+  z-index: 100;
+}
+
+.mobileMenuOpen {
+  composes: mobileMenu;
+  display: block;
+}
+
+.mobileNavLink {
+  display: block;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.mobileNavLink:hover {
+  background-color: #f5f5f5;
+}
+
+.mobileNavLinkActive {
+  composes: mobileNavLink;
+  color: #C53D43;
+  font-weight: 600;
+}
+
+.mobileLogoutButton {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: #dc2626;
+  background: none;
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
+.mobileLogoutButton:hover {
+  background-color: #fee2e2;
+}
+
+/* レスポンシブ */
+@media (max-width: 767px) {
+  .nav {
+    display: none;
+  }
+  .menuButton {
+    display: block;
+  }
+}

@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { signup } from "./actions";
 import styles from "../auth.module.css";
+
+export const metadata: Metadata = { title: "新規登録" };
 
 export default async function RegisterPage({
   searchParams,
@@ -79,11 +82,11 @@ export default async function RegisterPage({
               required
             />
             <label className={styles.checkboxLabel} htmlFor="agreeTerms">
-              <a href="/terms" target="_blank" style={{ color: "#C84B31" }}>
+              <a href="/terms" target="_blank" style={{ color: "#C53D43" }}>
                 利用規約
               </a>
               と
-              <a href="/privacy" target="_blank" style={{ color: "#C84B31" }}>
+              <a href="/privacy" target="_blank" style={{ color: "#C53D43" }}>
                 プライバシーポリシー
               </a>
               に同意します

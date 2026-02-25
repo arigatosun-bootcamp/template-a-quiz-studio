@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { resetPassword } from "./actions";
 import styles from "../auth.module.css";
+
+export const metadata: Metadata = { title: "パスワードリセット" };
 
 export default async function ResetPasswordPage({
   searchParams,
